@@ -10,13 +10,8 @@ import rp.demo.nodetree.domain.entites.Node;
 import rp.demo.nodetree.domain.repos.NodeRepo;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
-
-import static java.lang.Math.toIntExact;
 
 @SpringBootApplication
 public class NodeTreeApplication implements CommandLineRunner {
@@ -33,42 +28,49 @@ public class NodeTreeApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+        int height = 6;
+        for (int i = 0; i < args.length; i++) {
+            if (args[i].contains("node.height")) {
+                height = Integer.parseInt(args[i].split("=")[1]);
+            }
+        }
 
+        logger.info("Inserting dummy data nodes with height " + height);
         Node root = new Node("root");
         repo.save(root);
         root.setRoot_id(root.getId());
 
-        Node a = new Node("a",  1, root.getRoot_id());
-        Node b = new Node("b",  1, root.getRoot_id());
+        Node a = new Node("a", 1, root.getRoot_id());
+        Node b = new Node("b", 1, root.getRoot_id());
         a.setParent(root);
         b.setParent(root);
 
         repo.save(root);
         repo.save(a);
         repo.save(b);
-        createNewChildTree(a);
-        createNewChildTree(a);
+        createNewChildTree(a, height);
+        createNewChildTree(b, height);
         List<Node> nodeList = repo.findAll();
         logger.info("Total nodes " + nodeList.size());
 
     }
 
-    private  void createNewChildTree(Node parent){
-        if(parent.getHeight() == 9 ) return;
+    private void createNewChildTree(Node parent, int height) {
+        if (parent.getHeight() == height) return;
         List<Node> list = new ArrayList<Node>();
 
-        IntStream.range(toIntExact(parent.getHeight()), 9).forEach(
+        IntStream.range(1, 9).forEach(
                 nbr -> {
-                   list.add( new Node(parent.getName()+nbr, (parent.getHeight() +1), parent.getRoot_id()));
+                    list.add(new Node(parent.getName() + nbr, (parent.getHeight() + 1), parent.getRoot_id()));
                 }
         );
-        list.forEach(e-> {
+        list.forEach(e -> {
             e.setParent(parent);
             repo.save(e);
         });
 
-        list.forEach(e-> {
-           createNewChildTree(e);
+        list.forEach(e -> {
+            createNewChildTree(e, height);
         });
 
     }
