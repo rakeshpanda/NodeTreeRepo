@@ -61,15 +61,6 @@ class Node implements Comparable<Node> {
 
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Node)) return false;
-        Node node = (Node) o;
-        return Objects.equals(getId(), node.getId());
-    }
-
-
-    @Override
     public int compareTo(Node o) {
         return Objects.equals(getId(), o.getId()) ? 0 : (getId() > o.getId() ? 1 : -1);
     }
