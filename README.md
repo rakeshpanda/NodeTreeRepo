@@ -27,10 +27,14 @@ There are two HTTP APIs that will serve the two basic operations:
 
 
 1) Get all children nodes of a given node (the given node can be anyone in the tree structure).
-/childs/:id (id of the given node)
+
+url:  /childs/:id (id of the given node)
 
 2) Change the parent node of a given node (the given node can be anyone in the tree structure).
-/upate/id1/parent/id2   : {id1 ->id of given node}  {id2 ->id of parent node}
+
+url:  /upate/id1/parent/id2   : {id1 ->id of given node}  {id2 ->id of parent node}
+
+Application is taking a default heiight of 6 for creating dummy data. Each parent is created with 9 immediate childs. To increase the height pass command line argument node.height=x
 
 
 
