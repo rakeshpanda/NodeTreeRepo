@@ -28,7 +28,7 @@ public class NodeTreeApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        int height = 6;
+        int height = 2;
         for (int i = 0; i < args.length; i++) {
             if (args[i].contains("node.height")) {
                 height = Integer.parseInt(args[i].split("=")[1]);

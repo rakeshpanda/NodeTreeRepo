@@ -5,12 +5,16 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import rp.demo.nodetree.domain.entites.Node;
 import rp.demo.nodetree.domain.repos.NodeRepo;
 
 import javax.transaction.Transactional;
 import java.util.*;
+
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
+import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 
 @RestController
 public class NodeController {
@@ -24,7 +28,12 @@ public class NodeController {
         System.out.println("Hi ");
     }
 
-    @RequestMapping("/childs/{id}")
+
+    @RequestMapping(
+            value = "/childs/{id}",
+            method = GET,
+            produces = "application/json")
+    @ResponseBody
     public List<Node> getChildNodes(@PathVariable long id) {
         Date startTime = new Date();
         List<Node> result = repo.getAllNodes();
@@ -56,7 +65,11 @@ public class NodeController {
 
 
     @Transactional
-    @RequestMapping("/update/{nodeId}/parent/{parentId}")
+    @RequestMapping(
+            value = "/update/{nodeId}/parent/{parentId}",
+            method = PUT,
+            produces = "application/json")
+    @ResponseBody
     public Node replaceParent(@PathVariable("nodeId") long nodeId, @PathVariable("parentId") long parentId) {
         Node currNode = repo.findById(nodeId).get();
         Node parNode = repo.findById(parentId).get();

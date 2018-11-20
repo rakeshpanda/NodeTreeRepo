@@ -17,7 +17,7 @@ import java.util.Objects;
 @Table(indexes = {@Index(name = "IDX_height", columnList = "id")})
 @NoArgsConstructor
 @NamedQuery(name = "Node.getAllNodes",
-        query = "SELECT n FROM Node n left join fetch n.childs "
+        query = "SELECT distinct n FROM Node n left join fetch n.childs "
 )
 public @Data
 class Node implements Comparable<Node> {
